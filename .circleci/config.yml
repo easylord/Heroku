@@ -17,6 +17,4 @@ jobs:
       - run: 
           name: "echo an env var that is part of our project"
           command: |
-            echo $SECRET_KEY
-            echo $EMAIL_HOST_USER
-            echo $EMAIL_HOST_PASSWORD
+            echo $MY_ENV_VAR # this env var must be set within the project
