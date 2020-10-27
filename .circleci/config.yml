@@ -8,7 +8,6 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/base:2020.01
       - image: circleci/python:3.7.2
         auth:
           username: mydockerhub-user
@@ -18,5 +17,4 @@ jobs:
       - run: 
           name: "echo an env var that is part of our project"
           command: |
-            echo $MY_ENV_VAR # this env var must be set within the project 
-            python manage.py test
+            echo $MY_ENV_VAR # this env var must be set within the project
