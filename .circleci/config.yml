@@ -9,6 +9,7 @@ jobs:
   build:
     docker:
       - image: cimg/base:2020.01
+      - image: circleci/python:3.7.2
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
