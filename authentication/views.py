@@ -46,8 +46,7 @@ class RegisterView(generics.GenericAPIView):
         absurl = 'http://'+current_site+relativeLink+"?token="+str(token)
         email_body = 'Hi '+user.username + \
             ' Use the link below to verify your email \n' + absurl
-        email_adress= "cynthia007robbinson@gmail.com"
-
+        email_adress= "yusufisrael007@gmail.com"
         data = {'email_body': email_body, 'from_email': email_adress,'to_email': user.email,
                 'email_subject': 'Verify your email'}
         Util.send_email(data)
@@ -127,12 +126,12 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
                 if len(redirect_url) > 3:
                     return CustomRedirect(redirect_url+'?token_valid=False')
                 else:
-                    return CustomRedirect(os.environ.get('FRONTEND_URL', '')+'?token_valid=False')
+                    return CustomRedirect(os.environ.get('APP_SCHEME', '')+'?token_valid=False')
 
             if redirect_url and len(redirect_url) > 3:
                 return CustomRedirect(redirect_url+'?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
             else:
-                return CustomRedirect(os.environ.get('FRONTEND_URL', '')+'?token_valid=False')
+                return CustomRedirect(os.environ.get('APP_SCHEME', '')+'?token_valid=False')
 
         except DjangoUnicodeDecodeError as identifier:
             try:
@@ -165,3 +164,12 @@ class LogoutAPIView(generics.GenericAPIView):
         serializer.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class AuthUserAPIView(generics.GenericAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        user = User.objects.get(pk=request.user.pk)
+        serializer= RegisterSerializer(user)
+
+        return Response(serializer.data)

@@ -7,7 +7,6 @@ from django.contrib.auth.models import (
 from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 class UserManager(BaseUserManager):
 
     def create_user(self, username, email, password=None):
@@ -50,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
 
     objects = UserManager()
 

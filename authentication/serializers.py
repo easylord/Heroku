@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
-        max_length=68, min_length=6, write_only=True)
+        max_length=68, min_length=6,)
 
     default_error_messages = {
         'username': 'The username should only contain alphanumeric characters'}
@@ -19,6 +19,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'username', 'password']
+        
 
     def validate(self, attrs):
         email = attrs.get('email', '')
@@ -60,7 +61,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'username', 'tokens']
+        fields = ['id','email', 'password', 'username', 'tokens']
 
     def validate(self, attrs):
         email = attrs.get('email', '')
@@ -80,6 +81,7 @@ class LoginSerializer(serializers.ModelSerializer):
             raise AuthenticationFailed('Email is not verified')
 
         return {
+            'id': user.id,
             'email': user.email,
             'username': user.username,
             'tokens': user.tokens

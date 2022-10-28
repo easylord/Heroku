@@ -15,10 +15,10 @@ class Expense(models.Model):
         ('OTHERS', 'OTHERS')
     ]
 
-    category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255)
+    category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255, null=True)
     amount = models.DecimalField(
-        max_digits=10, decimal_places=2, max_length=255)
-    description = models.TextField()
+    max_digits=10, decimal_places=2, max_length=255)
+    description = models.CharField(max_length=200, null=True)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     date = models.DateField(null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)

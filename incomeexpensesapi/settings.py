@@ -14,6 +14,9 @@ import os
 import datetime
 import django_heroku
 import environ
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 
 env = environ.Env()
 # reading .env file
@@ -32,7 +35,7 @@ SECRET_KEY =env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.43.122','169.254.50.214', 'localhost', '127.0.0.1', '793b708a0987.ngrok.io']
 
 AUTH_USER_MODEL = 'authentication.User'
 # Application definition
@@ -50,7 +53,25 @@ INSTALLED_APPS = [
     'drf_yasg',
     'authentication',
     'expenses',
-    'income'
+    'userstat',
+    'income',
+    'cloudinary_storage',
+    'cloudinary',
+    'category',
+    'subCategory',
+    'product',
+    'things',
+    'banner',
+    'django_filters',
+    'drf_multiple_model',
+    'Reviews',
+    'stores',
+    'test',
+    'mptt',
+    'finaltest',
+    'cart'
+
+
 ]
 
 SWAGGER_SETTINGS = {
@@ -68,7 +89,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -117,17 +138,26 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_FILTER_BACKENDS': (
+        
+        'django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
     'NON_FIELD_ERRORS_KEY': 'error',
+    'EXCEPTION_HANDLER': 'utils.exceptionhandlers.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    
+    ),
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        #'rest_framework.parsers.FormParser',
+    ]
 }
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
 
@@ -163,15 +193,28 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+MEDIA = '/easy/'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 STATIC_URL = '/static/'
 
+#EMAIL_BACKEND = 'django_ses.SESBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_PORT = 2525 
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 django_heroku.settings(locals())
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME' :"djgnko0c2",
+    'API_KEY' : "321848858278289",
+    'API_SECRET': "hnjxQt4rxzu3I3iF_cCsNBeTh54"
+}
